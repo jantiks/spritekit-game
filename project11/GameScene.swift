@@ -24,6 +24,12 @@ class GameScene: SKScene {
         makeBouncer(at: CGPoint(x: 0, y: -384))
         makeBouncer(at: CGPoint(x: 256, y: -384))
         makeBouncer(at: CGPoint(x: 512, y: -384))
+        
+        makeSlot(at: CGPoint(x: 128, y: -384), isGood: true)
+        makeSlot(at: CGPoint(x: -128, y: -384), isGood: false)
+        makeSlot(at: CGPoint(x: 384, y: -384), isGood: false)
+        makeSlot(at: CGPoint(x: -384, y: -384), isGood: true)
+        
 
     }
     
@@ -43,5 +49,29 @@ class GameScene: SKScene {
         bouncer.physicsBody?.isDynamic = false
         bouncer.position = position
         addChild(bouncer)
+    }
+    
+    func makeSlot(at position: CGPoint, isGood: Bool) {
+        var slotBase: SKSpriteNode
+        var slotGlow: SKSpriteNode
+        
+        if isGood {
+            slotBase = SKSpriteNode(imageNamed: "slotBaseGood")
+            slotGlow = SKSpriteNode(imageNamed: "slotGlowGood")
+        } else {
+            slotBase = SKSpriteNode(imageNamed: "slotBaseBad")
+            slotGlow = SKSpriteNode(imageNamed: "slotGlowBad")
+
+        }
+        
+        slotBase.position = position
+        slotGlow.position = position
+        addChild(slotBase)
+        addChild(slotGlow)
+        
+        let spin = SKAction.rotate(byAngle: .pi, duration: 10)
+        let spinForever = SKAction.repeatForever(spin)
+        
+        slotGlow.run(spinForever)
     }
 }
